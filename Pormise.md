@@ -5,7 +5,7 @@
 ```javascript
 
 // 传入一个excutor
-var promise = new Promise( (resolve, reject) => {
+var promise1 = new Promise( (resolve, reject) => {
 	if(success){
 		resolve(value);
 	}else{
@@ -13,7 +13,9 @@ var promise = new Promise( (resolve, reject) => {
 	}
 } );
 
-var promise = fetch('path/to/something');
+var promise1 = fetch('path/to/something');
+
+var promise2 = promise1.then(fullfillment, rejection);
 
 ```
 
@@ -37,14 +39,15 @@ var promise = fetch('path/to/something');
 		* 在执行过程中抛出异常，`Promise`对象置为`Rejected`。
 - `Promise.prototype.catch()`相当于`Promise.prototype.then(null, rejection)`。
 
-- 在链式调用的过程中，数据(value)或错误原因(reason)的传递：
+- 在**链式调用**的过程中，数据(value)或错误原因(reason)的传递：
 	+ 最早的`Promise`对象调用`resolve(value)`，其中的`value`会传递给在`then`中的`fullfillment(value)`。
 	+ 最早的`Promise`对象调用`reject(reason)`或抛出一个异常，其中的`reason`或错误会传递给在`then`或`catch`中的`rejection(reason)`。
 
-- 在链式调用的过程中，也可以传递`Promise`对象：
-	+ 如果最早的`Promise`对象调用`resolve(new Promise())`，那么就会等待(阻塞，Blocking)传入的这个`Promise`对象的状态结果：
+- 在**链式调用**的过程中，也可以传递`Promise`对象：
+	+ 包括：在excutor中`resolve()`或`reject()`传入的`Promise`对象；以及在`then`和`catch`中返回的`Promise`对象
+	+ 如果传入或返回的`Promise`对象是在`resolve`或者`fullfillment`中出现，那么调用该方法的`Promise`对象的状态就是传入的这个`Promise`对象的状态结果(阻塞，Blocking)：
 		* 如果是`Fullfilled`，那么最早的`Promise`对象也会被置为`Fullfilled`。
 		* 如果是`Rejected`，那么最早的`Promise`对象也会被置为`Rejected`。
-	+ 如果最早的`Promise`对象调用`reject(new Promise())`，那么就会立即改为`Rejected`，传入的`reason`就是`Promise`对象。
+	+ 如果传入或返回的`Promise`对象是在`reject`或者`rejection`中出现，那么调用该方法的`Promise`对象的状态就会立即改为`Rejected`，传入的`reason`就是`Promise`对象。
 
-- 如果已经确定`Promise`对象的状态会是`Fullfilled`，可以使用`Promise.resolve(value)`，类似的`Promise.reject(reason)
+- 如果已经确定`Promise`对象的状态会是`Fullfilled`，可以使用`Promise.resolve(value)`，类似的`Promise.reject(reason)。
