@@ -2,4 +2,4 @@
 
 ## Understanding ECMAScript 6
 
-[Object]('./Object.md')
+[Object](Object.md)
