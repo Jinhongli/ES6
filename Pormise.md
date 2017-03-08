@@ -13,8 +13,6 @@ var promise1 = new Promise( (resolve, reject) => {
 	}
 } );
 
-var promise1 = fetch('path/to/something');
-
 var promise2 = promise1.then(fullfillment, rejection);
 
 ```
@@ -51,3 +49,7 @@ var promise2 = promise1.then(fullfillment, rejection);
 	+ 如果传入或返回的`Promise`对象是在`reject`或者`rejection`中出现，那么调用该方法的`Promise`对象的状态就会立即改为`Rejected`，传入的`reason`就是`Promise`对象。
 
 - 如果已经确定`Promise`对象的状态会是`Fullfilled`，可以使用`Promise.resolve(value)`，类似的`Promise.reject(reason)。
+
+- 多个`Promise`对象：
+	+ `Promise.all`：所有的`Promise`对象的状态均以改变。只要有一个`Rejected`，返回的`Promise`对象就是`Rejected`
+	+ `Promise.race`：只要有一个`Promise`的状态改变
